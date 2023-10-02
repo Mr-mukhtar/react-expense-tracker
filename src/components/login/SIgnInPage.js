@@ -1,22 +1,46 @@
-import React, { useState } from 'react';
-import { Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import React, {  useRef } from 'react';
+import { Container, Button } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SignInPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const history = useHistory();
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Logging in with:', email, password);
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+    
+
+    fetch(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          
+          returnSecureToken: true,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json().then((data) =>
+           console.log(data));
+           history.replace('/');
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+
+    
   };
 
   return (
@@ -28,38 +52,48 @@ const SignInPage = () => {
             <label>Email:</label>
             <br />
             <input
-             type='email' 
-             className="form-control"
-             value={email}
-              onChange={handleEmailChange} />
-
+              type='email'
+              className='form-control'
+              ref={emailInputRef}
+              placeholder='Enter your email'
+            />
 
             <br />
             <label>Password:</label>
             <br />
             <input
               type='password'
-              className="form-control"
-              value={password}
-              onChange={handlePasswordChange}
+              className='form-control'
+              ref={passwordInputRef}
+              placeholder='Enter your password'
             />
+            <div className='text-center'>
+              <Link to=''>Forgot Password?</Link>
+            </div>
+            <br />
+            <Button type='submit' variant='primary' className='w-100'>
+              Login
+            </Button>
             <br />
             <br />
-            <button type="submit" className="btn btn-primary">Login</button>
+          
           </form>
         </div>
       </Container>
       <br />
       <Container className='w-75'>
-        <div className="signup-content bg-light p-2 rounded" style={{ border: '1px solid lightcoral', textAlign: "center" }}>
-       
-       
-              <p className="m-0" style={{fontSize:"20px", fontFamily:"bold"}}> Have Not Account? {"    "} <span className='btn p-0'>
-                <Link to="/signup">SIGNUP</Link>
-              </span></p>
-              </div>
-  
-              </Container>
+        <div
+          className='signup-content bg-light p-2 rounded'
+          style={{ border: '1px solid lightcoral', textAlign: 'center' }}
+        >
+          <p className='m-0' style={{ fontSize: '20px', fontFamily: 'bold' }}>
+            Have Not Account? {'    '}
+            <span className='btn p-0'>
+              <Link to='/signup'>SIGNUP</Link>
+            </span>
+          </p>
+        </div>
+      </Container>
     </div>
   );
 };

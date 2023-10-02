@@ -11,7 +11,7 @@ function App() {
     <div>
       <main>
         <Switch>
-          <Route path='/signin' exact>
+          <Route path='/signin' >
             <SignInPage />
           </Route>
           <Route path='/signup'>
