@@ -1,17 +1,21 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const root = document.getElementById('root');
+
+ReactDOM.createRoot(root).render(
+  <>
+    <BrowserRouter   className="signup-page d-flex justify-content-center align-items-center"
+    style={{
+      minHeight: '100vh',
+      backgroundImage: "url('https://source.unsplash.com/weekly?nature beauty/1200*1200')",
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+    }}>
+      <App />
+    </BrowserRouter>
+  </>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
