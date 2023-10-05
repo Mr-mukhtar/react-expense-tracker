@@ -1,15 +1,10 @@
 import React from 'react'
-import SignUpPage from '../login/SignUpPage'
+
+
 
 const AboutPage = () => {
   return (
-    <div
-  
-    >
-        <SignUpPage/>
-        hh
-        <SignUpPage/>
-    
+    <div>hii
     </div>
   )
 }
