@@ -8,6 +8,7 @@ import Home from './components/home/Home';
 import Layout from './components/Layout/Layout';
 import AboutUs from './components/About/About';
 import Profile from './components/login/Profile/Profile';
+import ForgetPassword from './components/login/Forget password/ForgetPassword';
 
 function App() {
 
@@ -30,6 +31,10 @@ function App() {
 
           <Route path='/profile'>
             <Profile />
+          </Route>
+          
+          <Route path='/forgetpassword'>
+            <ForgetPassword />
           </Route>
           <Route path='/'>
             <AboutUs />

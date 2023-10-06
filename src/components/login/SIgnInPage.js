@@ -45,7 +45,7 @@ const SignInPage = () => {
       }
     }
   } catch (error) {
- 
+    console.error('Authentication failed:', error);
     toast.error('Authentication failed. Please try again later.');
   }
 };
@@ -74,7 +74,6 @@ const SignInPage = () => {
                 type='email'
                 className='form-control'
                 ref={emailInputRef}
-                value={email}
                 placeholder='Enter your email'
               />
 
@@ -82,14 +81,13 @@ const SignInPage = () => {
               <label>Password:</label>
               <br />
               <input
-              value={password}
                 type='password'
                 className='form-control'
                 ref={passwordInputRef}
                 placeholder='Enter your password'
               />
               <div className='text-center'>
-                <Link to=''>Forgot Password?</Link>
+                <Link to='/forgetpassword'>Forgot Password?</Link>
               </div>
               <br />
               <Button type='submit' variant='primary' className='w-100'>

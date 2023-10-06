@@ -10,6 +10,7 @@ const Profile = () => {
   const authCtx = useContext(AuthContext);
   const idToken = authCtx.idToken;
   let empty = true;
+  const history = useHistory();
 
   const CancelHandler = () => {
     history.push('/');
@@ -51,7 +52,7 @@ const Profile = () => {
         throw new Error('Something went wrong here!');
       }
 
-      
+
       const res = await fetch(
         'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
         {

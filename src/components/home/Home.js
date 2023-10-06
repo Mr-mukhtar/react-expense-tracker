@@ -4,20 +4,22 @@ import React, { Fragment, useContext } from 'react';
 
 import { Button } from 'react-bootstrap';
 import AuthContext from '../Context/AuthContext';
-import { useHistory } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 
 const Home = () => {
   
   const ctx = useContext(AuthContext);
-  const history = useHistory();
 
   
- 
+  const idToken = ctx.idToken;
+
 
   const logoutHandler = () => {
     ctx.logout();
-    history.push('/sigin')
+    localStorage.removeItem('idToken');
+
+  
   };
 
   const VerifyHandler = async () => {
