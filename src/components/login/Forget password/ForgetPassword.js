@@ -37,28 +37,44 @@ const ForgetPassword = () => {
   };
 
   return (
-    <form
-      className='w-95 mx-auto max-width-25rem mt-5'
-      onSubmit={passwordChangeHandler}
+    <div
+      className='signup-page d-flex justify-content-center align-items-center'
+      style={{
+        minHeight: '100vh',
+        backgroundImage: "url('https://source.unsplash.com/1000x1000/?computer password, forget')",
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+      }}
+      
     >
-      <div className='mb-3'>
-        <label htmlFor='new-password' className='form-label'>
-          Email
-        </label>
-        <input
-          type='email'
-          className='form-control'
-          id='new-password'
-          ref={emailInputRef}
-          placeholder='Enter your email'
-        />
-      </div>
-      <div className='mt-4'>
-        <button type='submit' className='btn btn-primary'>
-          Send Link
-        </button>
-      </div>
-    </form>
+      <form
+        className='w-50 mx-auto max-width-25rem mt-5'
+        onSubmit={passwordChangeHandler}
+      >
+        <div className='mb-3'>
+          <label
+            htmlFor='new-password'
+            className='form-label font-weight-bold text-white'
+          >
+            Email
+          </label>
+
+          <input
+            type='email'
+            className='form-control'
+            id='new-password'
+            ref={emailInputRef}
+            placeholder='Enter your email'
+          />
+        </div>
+        <div className='mt-4'>
+          <button type='submit' className='btn btn-primary'>
+            Send Link
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

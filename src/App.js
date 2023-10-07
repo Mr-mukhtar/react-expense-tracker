@@ -6,7 +6,7 @@ import SignInPage from './components/login/SIgnInPage';
 import SignUpPage from './components/login/SignUpPage';
 import Home from './components/home/Home';
 import Layout from './components/Layout/Layout';
-import AboutUs from './components/About/About';
+import AboutUs from './components/Layout/About/About';
 import Profile from './components/login/Profile/Profile';
 import ForgetPassword from './components/login/Forget password/ForgetPassword';
 

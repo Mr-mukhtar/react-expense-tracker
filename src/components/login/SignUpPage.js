@@ -9,25 +9,43 @@ const SignUpPage = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
+  const firstNameInputRef = useRef();
+  const lastNameInputRef = useRef();
+  const acceptTermsRef = useRef();
 
   const isEmailValid = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleSignUp = async(e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
     const enteredConfirmPassword = confirmPasswordInputRef.current.value;
+    const enteredFirstName = firstNameInputRef.current.value;
+    const enteredLastName = lastNameInputRef.current.value;
+    const acceptedTerms = acceptTermsRef.current.checked;
+    // Check if the "Accept Terms & Conditions" checkbox is checked
+    if (!acceptedTerms) {
+      toast.error('Please accept the Terms & Conditions');
+      return;
+    }
+
     // Check if passwords match
     if (enteredPassword !== enteredConfirmPassword) {
       toast.error('Passwords do not match');
       return;
-    } else {
-      try {
-        const response = await fetch(
+    }
+
+    // Rest of the signup logic
+    if (!isEmailValid(enteredEmail)) {
+      console.log('Invalid email.');
+      return;
+    }
+    try {
+      const response = await fetch(
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
         {
           method: 'POST',
@@ -35,6 +53,8 @@ const SignUpPage = () => {
             email: enteredEmail,
             password: enteredPassword,
             confirmPassword: enteredConfirmPassword,
+            firstName: enteredFirstName,
+            lastName: enteredLastName,
             returnSecureToken: true,
           }),
           headers: {
@@ -51,31 +71,25 @@ const SignUpPage = () => {
         toast.error('Sign up failed: ' + data.error.message);
       }
     } catch (error) {
-     
       toast.error('Sign up failed. Please try again later.');
-    }
-  }
-
-    // Rest of the signup logic
-
-    if (!isEmailValid(enteredEmail)) {
-      console.log('Invalid email.');
-      return;
     }
 
     // Reset the form
     emailInputRef.current.value = '';
     passwordInputRef.current.value = '';
     confirmPasswordInputRef.current.value = '';
+    firstNameInputRef.current.value = '';
+    lastNameInputRef.current.value = '';
+    acceptTermsRef.current.checked = false;
   };
 
   return (
     <div
       className='signup-page d-flex justify-content-center align-items-center'
       style={{
-        minHeight: '100vh',
+        minHeight: '90vh',
         backgroundImage:
-          "url('https://source.unsplash.com/weekly?nature/400x600')",
+          "url('https://source.unsplash.com/800x800/?computer , forget keypad')",
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
@@ -86,6 +100,33 @@ const SignUpPage = () => {
           <div className='signup-content bg-light p-4 rounded'>
             <h2 className='text-center'>Sign Up</h2>
             <form onSubmit={handleSignUp}>
+              <div className='row mb-3'>
+                <div className='col'>
+                  <label htmlFor='firstName' className='form-label'>
+                    First Name:
+                  </label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='firstName'
+                    ref={firstNameInputRef}
+                    placeholder='Enter your first name'
+                  />
+                </div>
+                <div className='col'>
+                  <label htmlFor='lastName' className='form-label'>
+                    Last Name:
+                  </label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='lastName'
+                    ref={lastNameInputRef}
+                    placeholder='Enter your last name'
+                  />
+                </div>
+              </div>
+
               <div className='mb-3'>
                 <label htmlFor='email' className='form-label'>
                   Email:
@@ -98,31 +139,44 @@ const SignUpPage = () => {
                   placeholder='Enter your email'
                 />
               </div>
-              <div className='mb-3'>
-                <label htmlFor='password' className='form-label'>
-                  Password:
-                </label>
-                <input
-                  type='password'
-                  className='form-control'
-                  id='password'
-                  ref={passwordInputRef}
-                  placeholder='Enter your password'
-                />
+              <div className='row mb-3'>
+                <div className='col'>
+                  <label htmlFor='password' className='form-label'>
+                    Password:
+                  </label>
+                  <input
+                    type='password'
+                    className='form-control'
+                    id='password'
+                    ref={passwordInputRef}
+                    placeholder='Enter your password'
+                  />
+                </div>
+                <div className='col'>
+                  <label htmlFor='confirmPassword' className='form-label'>
+                    Confirm Password:
+                  </label>
+                  <input
+                    type='password'
+                    className='form-control'
+                    id='confirmPassword'
+                    ref={confirmPasswordInputRef}
+                    placeholder='Confirm your password'
+                  />
+                </div>
               </div>
-              <div className='mb-3'>
-                <label htmlFor='confirmPassword' className='form-label'>
-                  Confirm Password:
-                </label>
+              <div className='form-group form-check'>
                 <input
-                  type='password'
-                  className='form-control'
-                  id='confirmPassword'
-                  ref={confirmPasswordInputRef}
-                  placeholder='Confirm your password'
+                  type='checkbox'
+                  name='acceptTerms'
+                  id='acceptTerms'
+                  ref={acceptTermsRef}
+                  className='form-check-input'
                 />
+                <label htmlFor='acceptTerms' className='form-check-label'>
+                  Accept Terms & Conditions
+                </label>
               </div>
-
               <br />
               <button type='submit' className='btn btn-primary w-100'>
                 Sign Up
