@@ -6,6 +6,7 @@ const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedExpense, setSelectedExpense] = useState(null);
 
   const updateExpenses = async () => {
     setIsLoading(true);
@@ -23,11 +24,10 @@ const Expenses = () => {
       for (const key in data) {
         loadedExpenses.push({
           id: key,
-          amount: data[key].amount,
-          description: data[key].description,
-          category: data[key].category,
+          ...data[key],
         });
       }
+
 
       setExpenses(loadedExpenses);
     } catch (error) {
@@ -76,11 +76,18 @@ const Expenses = () => {
       console.error('Error deleting expense:', error.message);
     }
   };
+  const editHandler = (expense) => {
+    setSelectedExpense(expense);
+  };
+
+  const clearSelectedExpense = () => {
+    setSelectedExpense(null);
+  };
 
   let content = <p>Found no Expense.</p>;
 
   if (expenses.length > 0) {
-    content = <ExpensesList expenses={expenses} onDeleteMovie={deleteHandler} />;
+    content =  <ExpensesList expenses={expenses} onDeleteExpense={deleteHandler} onEditExpense={editHandler} />
   }
 
   if (error) {
@@ -90,6 +97,9 @@ const Expenses = () => {
   if (isLoading) {
     content = <p>Loading...</p>;
   }
+
+
+
 
   return (
     <div>
