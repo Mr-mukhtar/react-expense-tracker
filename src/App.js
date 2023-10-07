@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
@@ -9,16 +9,23 @@ import Layout from './components/Layout/Layout';
 import AboutUs from './components/Layout/About/About';
 import Profile from './components/login/Profile/Profile';
 import ForgetPassword from './components/login/Forget password/ForgetPassword';
+import AuthContext from './components/Context/AuthContext';
 
 function App() {
 
+   const CartCtx = useContext(AuthContext);
+
   return (
+
+
     <Layout>
       <main>
         <Switch>
-          <Route path='/home'>
+          {CartCtx.isLoggedIn && (
+            <Route path='/home'>
             <Home />
           </Route>
+          )}
 
           <Route path='/signin'>
             <SignInPage />

@@ -18,7 +18,7 @@ const SignInPage = () => {
 
     try {
       const response = await fetch(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBV4vjzA4xVgaFjY9T_-bmLyYMCzZqziMY',
       {
         method: 'POST',
         body: JSON.stringify({

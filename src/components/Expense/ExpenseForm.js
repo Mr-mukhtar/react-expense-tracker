@@ -1,71 +1,63 @@
-import React, { useState } from 'react';
-import ExpensesList from './ExpensesList';
-import { Container, Form, Button } from 'react-bootstrap';
+import React, { useRef } from 'react';
 
-const ExpenseForm = () => {
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [expenses, setExpenses] = useState([]);
+const ExpenseForm = (props) => {
+  const amountRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const categoryRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newExpense = {
-      amount,
-      description,
-      category,
+
+    const expense = {
+      amount: amountRef.current.value,
+      description: descriptionRef.current.value,
+      category: categoryRef.current.value,
     };
-    setExpenses([...expenses, newExpense]);
-    setAmount('');
-    setDescription('');
-    setCategory('');
+    props.onAddExpense(expense);
+    // Clear the text fields
+    amountRef.current.value = '';
+    descriptionRef.current.value = '';
+    categoryRef.current.value = '';
   };
 
   return (
-    <Container className='mb-5'>
-      <Form onSubmit={handleSubmit } className='p-5'>
-        <Form.Group>
-          <Form.Label>Amount:</Form.Label>
-          <Form.Control
-            type='number'
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+    <div className="container mt-4">
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="amount" className="form-label">Amount:</label>
+          <input
+            type="number"
+            id="amount"
+            ref={amountRef}
+            className="form-control"
           />
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Description:</Form.Label>
-          <Form.Control
-            type='text'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">Description:</label>
+          <input
+            type="text"
+            id="description"
+            ref={descriptionRef}
+            className="form-control"
           />
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Category:</Form.Label>
-          <Form.Control
-            as='select'
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+        </div>
+        <div className="mb-3">
+          <label htmlFor="category" className="form-label">Category:</label>
+          <select
+            id="category"
+            ref={categoryRef}
+            className="form-select"
           >
             <option value=''>Select Category</option>
             <option value='Food'>Food</option>
             <option value='Petrol'>Petrol</option>
             <option value='Salary'>Salary</option>
-            <option value='emi'>EMI</option>
-            <option value='rent'>Rent</option>
-           
-          </Form.Control>
-        </Form.Group>
-
-        <Button variant='primary' type='submit'>
-          Add Expense
-        </Button>
-      </Form>
-
-      <ExpensesList expenses={expenses} />
-    </Container>
+            {/* Add more categories as needed */}
+          </select>
+        </div>
+        <button type='submit' className="btn btn-primary">Add Expense</button>
+      </form>
+    </div>
   );
 };
 

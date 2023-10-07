@@ -3,9 +3,8 @@ import React, { Fragment, useContext } from 'react';
 
 import { Button } from 'react-bootstrap';
 import AuthContext from '../Context/AuthContext';
-
 import { Link } from 'react-router-dom';
-import ExpenseForm from '../Expense/ExpenseForm';
+import Expenses from '../Expense/Expenses';
 
 const Home = () => {
   const ctx = useContext(AuthContext);
@@ -19,7 +18,7 @@ const Home = () => {
   const VerifyHandler = async () => {
     try {
       const res = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
+        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBV4vjzA4xVgaFjY9T_-bmLyYMCzZqziMY',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -58,7 +57,7 @@ const Home = () => {
 
       <br />
       <p>This is Expense Tracker</p>
-      <ExpenseForm/>
+      <Expenses/>
       <Button variant='light' onClick={logoutHandler}>
         Logout
       </Button>

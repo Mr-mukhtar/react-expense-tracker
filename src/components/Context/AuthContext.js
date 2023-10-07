@@ -1,46 +1,39 @@
-import React, { useState} from 'react';
-
-
+// AuthProvider.js
+import React, { useState, useEffect } from 'react';
 
 const AuthContext = React.createContext({
-  idToken: '',
+  token: '',
   isLoggedIn: false,
   login: (token) => {},
   logout: () => {},
-  UID: ''
 });
 
-
-
-
-
 export const AuthProvider = (props) => {
-  const [token,setToken]=useState(null)
-  const [userId,setUserId]=useState('')
-  const isLoggedin= !!token
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
 
-  const loginHandler = (idToken, Uid) => {
-    setToken(idToken);
-    setUserId(Uid);
-    localStorage.setItem('idToken', idToken);
-  }
-  
+  const loginHandler = (token) => {
+    setToken(token);
+    localStorage.setItem('token', token);
+  };
 
   const logoutHandler = () => {
-    setToken(null);
-    setUserId('');
-    localStorage.removeItem('idToken');
-    
-  }
+    setToken('');
+    localStorage.removeItem('token');
+  };
 
-  
-  
+  useEffect(() => {
+    // Check if token exists on page load
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
   const contextValue = {
     token: token,
-    isLoggedIn: isLoggedin,
+    isLoggedIn: !!token,
     login: loginHandler,
     logout: logoutHandler,
-    UID: userId,
   };
 
   return (
