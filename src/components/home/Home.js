@@ -1,21 +1,30 @@
-//home.js
-import React, { Fragment, useContext } from 'react';
+///Home.js
 
+import React, { Fragment } from 'react';
 import { Button } from 'react-bootstrap';
-import AuthContext from '../Context/AuthContext';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Expenses from '../Expense/Expenses';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../store/authRedux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
-  const ctx = useContext(AuthContext);
-
-  const isToken = ctx.isToken;
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const idToken = useSelector((state) => state.auth.idToken);
+  const dispatch = useDispatch();
+  
+  const navigate = useNavigate();
 
   const logoutHandler = () => {
-    ctx.logout();
+    dispatch(authActions.logout());
+  };
+  const navigateToProfile = () => {
+    navigate('/profile');
   };
 
-  const VerifyHandler = async () => {
+
+  const verifyHandler = async () => {
     try {
       const res = await fetch(
         'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBV4vjzA4xVgaFjY9T_-bmLyYMCzZqziMY',
@@ -23,44 +32,54 @@ const Home = () => {
           method: 'POST',
           body: JSON.stringify({
             requestType: 'VERIFY_EMAIL',
-            idToken:  isToken,
+            idToken: idToken,
           }),
           headers: { 'Content-Type': 'application/json' },
         }
       );
       if (res.ok) {
-        alert('Verification Mail Sent');
+        toast.success('Verification Mail Sent');
       } else {
         throw new Error('Something Went Wrong');
       }
     } catch (err) {
-      alert(err.message);
+      toast.error('Error verifying email: ' + err.message);
     }
   };
 
   return (
     <Fragment>
-      <h1 style={{ textAlign: 'center' }}>Welcome to expense tracker!!</h1>
+      <div>
+        <h1 style={{ textAlign: 'center' }}>
+          Welcome to the expense tracker!!
+        </h1>
 
-      <p style={{ textAlign: 'end' }}>
-        Your profile is incomplete{' '}
-        <span className='btn p-0'>
-          <Link to='/profile'>Complete Now</Link>
-        </span>
-      </p>
+        {isLoggedIn && (
+          <p style={{ textAlign: 'end' }}>
+          Your profile is incomplete {'    '}
+          <span className='btn p-0' onClick={navigateToProfile} style={{ color: 'blue',fontSize: '18px'  }}>
+            Complete Now
+          </span>
+        </p>
+        
+        )}
 
-      <p style={{ textAlign: 'end' }}>
-        <Button onClick={VerifyHandler} variant='primary'>
-          Verify your E-mail
+        {isLoggedIn && (
+          <p style={{ textAlign: 'end' }}>
+            <Button onClick={verifyHandler} variant='primary'>
+              Verify your E-mail
+            </Button>
+          </p>
+        )}
+
+        {/* <br />
+        <p>This is the Expense Tracker</p> */}
+        <Expenses />
+
+        <Button variant='danger' onClick={logoutHandler}>
+          Logout
         </Button>
-      </p>
-
-      <br />
-      <p>This is Expense Tracker</p>
-      <Expenses/>
-      <Button variant='light' onClick={logoutHandler}>
-        Logout
-      </Button>
+      </div>
     </Fragment>
   );
 };

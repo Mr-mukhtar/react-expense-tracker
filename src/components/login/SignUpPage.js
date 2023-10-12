@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import { Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmPasswordInputRef = useRef();
@@ -66,6 +67,7 @@ const SignUpPage = () => {
       if (response.ok) {
         const data = await response.json();
         toast.success(`${data.email}, Your account has been created!`);
+        navigate('/signin');
       } else {
         const data = await response.json();
         toast.error('Sign up failed: ' + data.error.message);
@@ -193,7 +195,7 @@ const SignUpPage = () => {
             <p className='m-0' style={{ fontSize: '20px', fontFamily: 'bold' }}>
               Already Have Account? {'    '}{' '}
               <span className='btn p-0'>
-                <Link to='/signin'>LOGIN</Link>
+                <NavLink to='/signin'>LOGIN</NavLink>
               </span>
             </p>
           </div>

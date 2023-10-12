@@ -1,53 +1,33 @@
-import React, { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-
 import SignInPage from './components/login/SIgnInPage';
 import SignUpPage from './components/login/SignUpPage';
 import Home from './components/home/Home';
 import Layout from './components/Layout/Layout';
 import AboutUs from './components/Layout/About/About';
-import Profile from './components/login/Profile/Profile';
 import ForgetPassword from './components/login/Forget password/ForgetPassword';
-import AuthContext from './components/Context/AuthContext';
+import Profile from './components/login/Profile/Profile';
+import New from './components/login/New';
+import { useSelector } from 'react-redux';
 
 function App() {
-
-   const CartCtx = useContext(AuthContext);
-
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
-
-
     <Layout>
       <main>
-        <Switch>
-          {CartCtx.isLoggedIn && (
-            <Route path='/home'>
-            <Home />
-          </Route>
-          )}
+        <Routes>
+          {isLoggedIn && <Route path='/' element={<Home />} exect />}
+          {!isLoggedIn && <Route path='/' element={<SignInPage />} />}
+          <Route path='/home' element={<Home />} exect />
+          <Route path='/signin' element={<SignInPage />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/new' element={<New />} />
+          <Route path='/signup' element={<SignUpPage />} />
+          <Route path='/forgetpassword' element={<ForgetPassword />} />
 
-          <Route path='/signin'>
-            <SignInPage />
-          </Route>
-
-          <Route path='/signup'>
-            <SignUpPage />
-          </Route>
-          
-
-          <Route path='/profile'>
-            <Profile />
-          </Route>
-          
-          <Route path='/forgetpassword'>
-            <ForgetPassword />
-          </Route>
-          <Route path='/'>
-            <AboutUs />
-          </Route>
-         
-        </Switch>
+          <Route path='/about' element={<AboutUs />} />
+        </Routes>
       </main>
       <ToastContainer />
     </Layout>

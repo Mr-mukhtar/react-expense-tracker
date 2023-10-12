@@ -1,25 +1,35 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useState } from 'react';
 import Footer from './Footer';
 import MainNavigation from './MainNavigation';
-import AuthContext from '../Context/AuthContext';
-import Home from '../home/Home';
+
+import { useSelector } from 'react-redux';
+import DarkModeToggle from '../Expense/DarkModeToggle'; // Import the DarkModeToggle component
 
 const Layout = (props) => {
-  const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
-  
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handleToggleDarkMode = (isDark) => {
+    setIsDarkMode(isDark);
+  };
+
+  const textColor = isDarkMode ? 'white' : 'black'; 
   return (
     <Fragment>
-      {isLoggedIn ? (
-        <Home />
-      ) : (
-        <Fragment>
-          <MainNavigation />
-          <div>{props.children}</div>
-      
-        </Fragment>
-      )}
-          {isLoggedIn && <Footer />}
+      <div
+        style={{
+          backgroundColor: isDarkMode ? '#000' : '#fff',
+          color: textColor,
+        }}
+      >
+        <MainNavigation />
+        <DarkModeToggle
+          isDarkMode={isDarkMode}
+          onToggle={handleToggleDarkMode}
+        />
+        <div>{props.children}</div>
+      </div>
+      {isLoggedIn && <Footer isDarkMode={isDarkMode} />}
     </Fragment>
   );
 };

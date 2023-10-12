@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ForgetPassword = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const emailInputRef = useRef();
 
   const passwordChangeHandler = async (e) => {
@@ -11,7 +11,7 @@ const ForgetPassword = () => {
 
     try {
       const res = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
+        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBV4vjzA4xVgaFjY9T_-bmLyYMCzZqziMY',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -26,7 +26,7 @@ const ForgetPassword = () => {
 
       if (res.ok) {
         alert('Password reset link has been sent to your email');
-        history.replace('/signin');
+      navigate('/signin');
       } else {
         throw new Error('Something went wrong');
       }

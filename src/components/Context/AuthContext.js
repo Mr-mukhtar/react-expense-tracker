@@ -1,46 +1,45 @@
-// AuthProvider.js
-import React, { useState, useEffect } from 'react';
+// // AuthProvider.js
+// import React, { useState, useEffect } from 'react';
 
-const AuthContext = React.createContext({
-  token: '',
-  isLoggedIn: false,
-  login: (token) => {},
-  logout: () => {},
-});
+// const AuthContext = React.createContext({
+//   token: '',
+//   isLoggedIn: false,
+//   login: (uid) => {},
+//   logout: () => {},
+  
+// });
 
-export const AuthProvider = (props) => {
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
+// export const AuthProvider = (props) => {
+//   const initialState= localStorage.getItem('token')
+//   const [token,setToken]=useState(initialState)
+//   const [userId,setUserId]=useState('')
+//   const isLoggedin= !!token
 
-  const loginHandler = (token) => {
-    setToken(token);
-    localStorage.setItem('token', token);
-  };
+//   const loginHandler = (id,email)=>{
+//     setToken(id)
+//     setUserId(email)
+//     localStorage.setItem('token',id)
+    
+// }
+//   const logoutHandler = () => {
+//     setToken(null)
+//     localStorage.removeItem('token')
+//   };
 
-  const logoutHandler = () => {
-    setToken('');
-    localStorage.removeItem('token');
-  };
+//   const contextValue = {
+//     token: token,
+//     isLoggedIn: isLoggedIn,
+   
+//     login: loginHandler,
+//     logout: logoutHandler,
+//   };
+  
 
-  useEffect(() => {
-    // Check if token exists on page load
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
+//   return (
+//     <AuthContext.Provider value={contextValue}>
+//       {props.children}
+//     </AuthContext.Provider>
+//   );
+// };
 
-  const contextValue = {
-    token: token,
-    isLoggedIn: !!token,
-    login: loginHandler,
-    logout: logoutHandler,
-  };
-
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {props.children}
-    </AuthContext.Provider>
-  );
-};
-
-export default AuthContext;
+// export default AuthContext;

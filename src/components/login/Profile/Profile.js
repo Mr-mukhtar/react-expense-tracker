@@ -1,19 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, {  useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
-
-import AuthContext from '../../Context/AuthContext';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [enteredName, setEnteredName] = useState('');
   const [enteredURL, setEnteredURL] = useState('');
-  const authCtx = useContext(AuthContext);
-  const idToken = authCtx.idToken;
+  const idToken = useSelector((state) => state.auth.idToken);
   let empty = true;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const CancelHandler = () => {
-    history.push('/');
+navigate('/');
   };
 
   if (enteredName !== '' && enteredURL !== '') {
@@ -33,7 +31,7 @@ const Profile = () => {
 
     try {
       const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
+        'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBV4vjzA4xVgaFjY9T_-bmLyYMCzZqziMY',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -52,9 +50,8 @@ const Profile = () => {
         throw new Error('Something went wrong here!');
       }
 
-
       const res = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyA91ErKO8Nrqrc-QuZKSABBU-WXT2EpVbw',
+        'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBV4vjzA4xVgaFjY9T_-bmLyYMCzZqziMY',
         {
           method: 'POST',
           body: JSON.stringify({ idToken: idToken }),

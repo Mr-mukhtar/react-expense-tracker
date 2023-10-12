@@ -1,13 +1,17 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Container, Button } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import AuthContext from '../Context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { Link} from 'react-router-dom';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { authActions } from '../store/authRedux';
+import { useNavigate } from 'react-router-dom';
 
 const SignInPage = () => {
-  const authCtx = useContext(AuthContext);
-  const history = useHistory();
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
 
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -34,8 +38,8 @@ const SignInPage = () => {
 
     if (response.ok) {
       const data = await response.json();
-      authCtx.login(data.idToken);
-      history.replace('/');
+      dispatch(authActions.login({idToken: data.idToken, UID: data.localId}))
+      navigate('/');
     } else {
       const data = await response.json();
       if (data.error.code === 400) {
